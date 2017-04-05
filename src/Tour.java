@@ -3,17 +3,13 @@ import java.util.*;
 
 public class Tour {
 	private Node tour;
-	private int size;// I could use the Node class to calculate distance... but
-						// that would take time
+	private int size;
 
-	Tour()// empty tour
-	{
+	Tour() {
 		size = 0;
 	}
 
-	Tour(Point a, Point b, Point c, Point d)// create a 4 point tour
-											// a->b->c->d->a
-	{
+	public Tour(Point a, Point b, Point c, Point d) {
 		size = 4;
 		tour = new Node(a);
 		tour.insert(b, 1);
@@ -21,26 +17,18 @@ public class Tour {
 		tour.insert(d, 3);
 	}
 
-	void show()// print the tour to standard output
+	void show()
 	{
 		for (int i = 0; i < size; i++) {
-			StdOut.print(tour.get(i).getPoint());
+			System.out.print(tour.get(i).getPoint() + "[");
+			System.out.print(tour.get(i).getPoint().getDistanceToLastMeasure()+"]");
+			System.out.print("{"+tour.get(i).getPoint().getLastDistanceMeasurePoint()+"}\n");
 		}
-	}
-
-	void draw()// draw the tour to standard draw
-	{
-		tour.get(0).getPoint().draw();
-		for (int i = 1; i < size; i++) {
-			tour.get(i).getPoint().draw();
-			tour.get(i).getPoint().drawTo(tour.get(i - 1).getPoint());
-		}
-		tour.get(0).getPoint().drawTo(tour.get(size - 1).getPoint());
 	}
 
 	int size() {
 		return size;
-	}// number of points on tour
+	}
 
 	double distance()// return the total distance of the tour
 	{
@@ -54,7 +42,7 @@ public class Tour {
 		return distance;
 	}
 
-	void insertNearest(Point p)// insert p using nearest neighbour heuristic
+	void insertNeighbour(Point p)
 	{
 		if (size == 0) {
 			size = 1;
@@ -67,19 +55,26 @@ public class Tour {
 
 		for (int i = 0; i < size; i++) {
 			if (tour.get(i).getPoint().distanceTo(p) < dist) {
-				dist = tour.get(i).getPoint().distanceTo(p);// pretty simple,
-															// keep track of
-															// smallest distance
-				nearest = i;// and the point that gave that distance
+				dist = tour.get(i).getPoint().distanceTo(p);
+				nearest = i;
 			}
 		}
-
-		tour.insert(p, nearest);// then add that point
-
+		tour.insert(p, nearest);
 		size++;
 	}
 
-	void insertSmallest(Point p)// insert p using smallest increase heuristic
+	void shortestDistanceBetween(int pointsToVisit, int nodePosition){
+		double distancesBetweenPoints[][] = new double[pointsToVisit][pointsToVisit];
+		if(size>= pointsToVisit){
+			
+		} else {
+			for(int i = nodePosition; i < size ; i++){
+				
+			}
+		}
+	}
+	
+	void insertShortDistance(Point p)
 	{
 		if (size == 0) {
 			size = 1;
@@ -88,38 +83,22 @@ public class Tour {
 		}
 
 		double smallestIncrease = Double.POSITIVE_INFINITY;
-		int index = 0;// handle the second point
-		double originalD, newD;// HAHAHAHAHAHA... "newd" XD
+		int index = 0;
+		double originalD, newD;
 		for (int i = 1; i < size; i++) {
-			originalD = tour.get(i).getPoint().distanceTo(tour.get(i - 1).getPoint());// distance
-																						// from
-																						// A
-																						// to
-																						// B
+			originalD = tour.get(i).getPoint().distanceTo(tour.get(i - 1).getPoint());
+
 			newD = p.distanceTo(tour.get(i).getPoint()) + p.distanceTo(tour.get(i - 1).getPoint());// distance
-																									// from
-																									// A
-																									// to
-																									// P
-																									// to
-																									// B
+
 			if (newD - originalD <= smallestIncrease) {
 				smallestIncrease = newD - originalD;
 				index = i - 1;
 			}
 		}
 		originalD = tour.get(0).getPoint().distanceTo(tour.get(size - 1).getPoint());// distance
-																						// from
-																						// first
-																						// to
-																						// last
+
 		newD = p.distanceTo(tour.get(0).getPoint()) + p.distanceTo(tour.get(size - 1).getPoint());// distance
-																									// from
-																									// first
-																									// to
-																									// P
-																									// to
-																									// last
+
 		if (newD - originalD <= smallestIncrease) {
 			smallestIncrease = newD - originalD;
 			index = size - 1;
@@ -168,7 +147,3 @@ public class Tour {
 		}
 	}
 }
-/*
- * On a final note: The Java notation makes me very uncomfortable for some
- * reason, hence the C style curly brackets
- */

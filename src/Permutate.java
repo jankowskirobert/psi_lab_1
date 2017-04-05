@@ -37,6 +37,9 @@ public class Permutate {
 	}
 	
 	public static void main(String[] args) {
+		
+		
+		
 		Node n1 = new Node();
 		n1.x = 5;
 		n1.y = 6;
