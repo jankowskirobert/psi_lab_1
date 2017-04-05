@@ -40,6 +40,7 @@ public class Permutate {
 		Node n1 = new Node();
 		n1.x = 5;
 		n1.y = 6;
+		n1.start = true;
 		Node n2 = new Node();
 		n2.x = 5;
 		n2.y = 7;
@@ -49,6 +50,7 @@ public class Permutate {
 		Node n4 = new Node();
 		n4.x = 5;
 		n4.y = 19;
+		n4.end = true;
 		Node n5 = new Node();
 		n5.x = 5;
 		n5.y = 1;
@@ -68,8 +70,13 @@ public class Permutate {
 		output.put(ns, distance);
 			System.out.println(ns + " " + distance);
 		}
+		System.out.println();
+		System.out.println(output.size());
 		final Comparator<? super Entry<List<Node>, Double>> comp = (p1, p2) -> Double.compare(p1.getValue(), p2.getValue());
 		System.out.println();
-		System.out.println(output.entrySet().stream().min(comp).get().getKey());
+		Map.Entry<List<Node>, Double> en = output.entrySet().stream().filter(x -> x.getKey().get(0).start && x.getKey().get(x.getKey().size()-1).end).min(comp).get();
+		long size = output.entrySet().stream().filter(x -> x.getKey().get(0).start && x.getKey().get(x.getKey().size()-1).end).count();
+		System.out.println(size);
+		System.out.println(en.getValue() + " " + en.getKey());
 	}
 }
